@@ -1,0 +1,14 @@
+version: '3.3'
+
+services:
+  db:
+    image: postgis/postgis
+    container_name: geo-database
+    volumes:
+      - ./var/postgres/datadir:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_PASSWORD=locationbasedservice
+      - POSTGRES_DB=lbs
+      - POSTGRES_USER=geouser
