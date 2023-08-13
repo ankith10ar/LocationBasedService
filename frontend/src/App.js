@@ -10,6 +10,8 @@ function App() {
 
   const [locations, setLocations] = useState([]);
 
+  const [selectedLocation, setSelectedLocation] = useState(null);
+
   const fetchLocations = async () => {
       try {
         const response = await fetch('http://localhost:8080/geolocation/get-all', {
@@ -39,8 +41,8 @@ function App() {
   return (
     <div className="App">
       <div className='app-container'>
-        <SidePane locations={locations}></SidePane>
-        <CustomMap2 locations={locations}></CustomMap2>
+        <SidePane selectedLocation={selectedLocation} setSelectedLocation={setSelectedLocation} locations={locations}></SidePane>
+        <CustomMap2 selectedLocation={selectedLocation} setSelectedLocation={setSelectedLocation} locations={locations}></CustomMap2>
       </div>
     </div>
   );

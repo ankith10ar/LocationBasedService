@@ -1,4 +1,4 @@
-import {MapContainer, TileLayer, Marker, Popup, Tooltip, useMap} from 'react-leaflet';
+import {MapContainer, TileLayer, Marker, Popup, Tooltip, useMap, useMapEvent} from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 // import 'leaflet/dist/images/marker-icon.png';
 // import 'leaflet/dist/images/layers-2x.png';
@@ -24,19 +24,33 @@ const hospital = L.divIcon({
             '<span class="my-div-span">Hospital</span>'
 })
 
-function onClickMarker(e) {
-    console.log(e);
-}
 
-function PaneToFirstLocation({locations}) {
+
+function PaneToFirstLocation({locations, selectedLocation}) {
     const map = useMap();
+    // const id = selectedLocation ? selectedLocation:0;
     if (locations && locations.length>0) {
-        console.log(locations[0].geo);
-        const centerLat = locations[0].geo.coordinates[0];
-        const centerLon = locations[0].geo.coordinates[1];
-        map.panTo([centerLat, centerLon]);
+        console.log(selectedLocation);
+
+        if (selectedLocation) {
+            const location = locations.find( (loc) => loc.business.id === selectedLocation);
+            const centerLat = location.geo.coordinates[0];
+            const centerLon = location.geo.coordinates[1];
+            // map.panTo([centerLat, centerLon]);
+            // map.setView([centerLat, centerLon], 12, { animate: true, pan: {duration: 1}});
+            map.flyTo([centerLat, centerLon], 13, { animate: true, duration: 1});
+        } else {
+            const centerLat = locations[0].geo.coordinates[0];
+            const centerLon = locations[0].geo.coordinates[1];
+            // map.panTo([centerLat, centerLon]);
+            // map.setView([centerLat, centerLon], 12, { animate: true, pan: {duration: 1}});
+            map.flyTo([centerLat, centerLon], 13, { animate: true, duration: 1});
+        }
+
+        
     }
 }
+
 
 
 function DeclutterLabels({markers}) {
@@ -132,19 +146,26 @@ function DeclutterLabels({markers}) {
 export default function CustomMap2(props) {
 
 
-    const {locations} = props;
+    const {locations, selectedLocation, setSelectedLocation} = props;
 
+    function onClickMarker(e, id) {
+        setSelectedLocation(id);
+    }
     
 
     const markers = [];
     locations.forEach(location => {
         markers.push(
-            <Marker id={location.business.id} key={location.business.id} position={[location.geo.coordinates[0], location.geo.coordinates[1]]} icon={renderMarker(location.business.type, location.business.name)} eventHandlers={{ click: (e) => onClickMarker(e) }}>
+            <Marker id={location.business.id} 
+                    key={location.business.id} 
+                    position={[location.geo.coordinates[0], location.geo.coordinates[1]]} 
+                    icon={renderMarker(location.business.type, location.business.name)} 
+                    eventHandlers={{ click: (e) => onClickMarker(e, location.business.id) }}>
             {/* <Popup>
                 A pretty CSS3 popup. <br /> Easily customizable.
             </Popup> */}
-            <Tooltip>{location.business.type}</Tooltip>
-        </Marker>
+                <Tooltip>{location.business.type}</Tooltip>
+            </Marker>
         )
     });
 
@@ -164,7 +185,7 @@ export default function CustomMap2(props) {
             </Marker> */}
 
             {markers}
-            <PaneToFirstLocation locations={locations}></PaneToFirstLocation>
+            <PaneToFirstLocation locations={locations} selectedLocation={selectedLocation}></PaneToFirstLocation>
             <DeclutterLabels markers={markers}></DeclutterLabels>
         </MapContainer>
     );
