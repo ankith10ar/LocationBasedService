@@ -31,6 +31,10 @@ public class GeoLocationService {
         geoLocationRepository.saveAllAndFlush(geoLocations);
     }
 
+    public List<GeoLocation> findAll() {
+        return geoLocationRepository.findAll();
+    }
+
 
     public List<GeoLocation> findAround(double lat, double lon, double distance) {
         GeometryFactory geometryFactory = new GeometryFactory();

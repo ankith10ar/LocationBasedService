@@ -4,19 +4,22 @@ import com.maps.location.model.GeoLocation;
 import com.maps.location.model.GeoLocationResult;
 import com.maps.location.service.GeoLocationService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
+@CrossOrigin
 @RequestMapping("/geolocation")
 public class GeoLocationController {
 
     @Autowired
     private GeoLocationService service;
+
+    @GetMapping("get-all")
+    public GeoLocationResult getAllLocations() {
+        return new GeoLocationResult(service.findAll());
+    }
 
     @GetMapping("{lat}/{lon}/{distance}")
     public GeoLocationResult getCityNear(

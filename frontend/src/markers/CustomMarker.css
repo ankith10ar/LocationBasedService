@@ -1,0 +1,56 @@
+.my-div-icon img{
+    height: 35px;
+}
+
+.my-div-icon {
+    background-color: transparent !important;
+}
+
+.show-label {
+    opacity: 1;
+}
+
+.hide-label {
+    opacity: 0;
+}
+
+.my-div-div {
+    display: inline-block;
+}
+
+.my-div-icon-dot img{
+    opacity: 0 !important;
+}
+
+.my-div-icon-dot span{
+    opacity: 0;
+}
+
+.my-div-icon-dot {
+    /* background-color: black; */
+    border-radius: 50%;
+}
+
+.my-div-hospital-icon {
+    background-color: #FF0000;
+}
+
+.my-div-bank-icon {
+    background-color: #40AE77;
+}
+
+.my-div-gym-icon {
+    background-color: #373737;
+}
+
+.my-div-hotel-icon {
+    background-color: #FF7700;
+}
+
+.my-div-mall-icon {
+    background-color: #004EFF;
+}
+
+.my-div-restaurant-icon {
+    background-color: #FFC400;
+}
