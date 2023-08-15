@@ -6,6 +6,7 @@ import gymSmall from '../assets/icons/gym/Gym.svg';
 import hotelSmall from '../assets/icons/hotel/Hotel.svg';
 import mallSmall from '../assets/icons/mall/Mall.svg';
 import restaurantSmall from '../assets/icons/restaurant/Restaurant.svg';
+import user from '../assets/icons/user/User.svg'
 
 function CustomMarker(icon, label, type) {
     return L.divIcon({
@@ -36,11 +37,13 @@ export default function renderMarker(type, name) {
     } else if (type.toLowerCase()==='gym') {
         return CustomMarker(gymSmall, name, 'gym');
     } else if (type.toLowerCase()==='hotel') {
-        return CustomMarker(hotelSmall, name, 'Hotel');
+        return CustomMarker(hotelSmall, name, 'hotel');
     } else if (type.toLowerCase()==='mall') {
         return CustomMarker(mallSmall, name, 'mall');
     } else if (type.toLowerCase()==='restaurant') {
         return CustomMarker(restaurantSmall, name, 'restaurant');
+    } else if (type.toLowerCase()==='user') {
+        return CustomMarker(user, name, 'user')
     }
 }
 

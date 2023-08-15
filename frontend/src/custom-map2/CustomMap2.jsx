@@ -10,6 +10,7 @@ import icon from 'leaflet/dist/images/marker-icon.png';
 import iconShadow from 'leaflet/dist/images/marker-shadow.png';
 import renderMarker from '../markers/CustomMarker';
 import  labelgun  from 'labelgun';
+import { useEffect, useState, useRef } from 'react';
 
 let DefaultIcon = L.icon({
     iconUrl: icon,
@@ -30,7 +31,7 @@ function PaneToFirstLocation({locations, selectedLocation}) {
     const map = useMap();
     // const id = selectedLocation ? selectedLocation:0;
     if (locations && locations.length>0) {
-        console.log(selectedLocation);
+        // console.log(selectedLocation);
 
         if (selectedLocation) {
             const location = locations.find( (loc) => loc.business.id === selectedLocation);
@@ -39,13 +40,14 @@ function PaneToFirstLocation({locations, selectedLocation}) {
             // map.panTo([centerLat, centerLon]);
             // map.setView([centerLat, centerLon], 12, { animate: true, pan: {duration: 1}});
             map.flyTo([centerLat, centerLon], 13, { animate: true, duration: 1});
-        } else {
-            const centerLat = locations[0].geo.coordinates[0];
-            const centerLon = locations[0].geo.coordinates[1];
-            // map.panTo([centerLat, centerLon]);
-            // map.setView([centerLat, centerLon], 12, { animate: true, pan: {duration: 1}});
-            map.flyTo([centerLat, centerLon], 13, { animate: true, duration: 1});
-        }
+        } 
+        // else {
+        //     const centerLat = locations[0].geo.coordinates[0];
+        //     const centerLon = locations[0].geo.coordinates[1];
+        //     // map.panTo([centerLat, centerLon]);
+        //     // map.setView([centerLat, centerLon], 12, { animate: true, pan: {duration: 1}});
+        //     map.flyTo([centerLat, centerLon], 13, { animate: true, duration: 1});
+        // }
 
         
     }
@@ -58,39 +60,39 @@ function DeclutterLabels({markers}) {
     let showLabel = function(label){ if (label.labelObject.parentElement) { label.labelObject.parentElement.classList.remove('my-div-icon-dot'); label.labelObject.parentElement.classList.add('my-div-icon'); }};
     let labelEngine = new labelgun(hideLabel, showLabel, 100);
     const map = useMap();
-    const minZoom = map.getMinZoom();
-    const maxZoom = map.getMaxZoom();
+    // const minZoom = map.getMinZoom();
+    // const maxZoom = map.getMaxZoom();
     
     let i=1;
-    markers.forEach(marker => {
-        if (document.getElementsByClassName('leaflet-marker-icon')[i-1]) {
-            addLabel(document.getElementsByClassName('leaflet-marker-icon')[i-1].querySelector('.my-div-div'), ++i);
+    Array.from(document.getElementsByClassName('leaflet-marker-icon')).forEach( (element, index) => {
+        if (element) {
+            addLabel(element.querySelector('.my-div-div'), index);
         }
     })
     
     map.on("zoomend", () => {
         resetLabels(markers);
         i=1;
-        console.log(map.getZoom());
+        // console.log(map.getZoom());
         let zoom = map.getZoom();
         if (zoom<8) {
-            markers.forEach(marker => {
-                if (document.getElementsByClassName('leaflet-marker-icon')[i-1]) {
-                    document.getElementsByClassName('leaflet-marker-icon')[i++ - 1].classList.add('my-div-icon-dot');
-                    document.getElementsByClassName('leaflet-marker-icon')[i++ - 1].classList.remove('my-div-icon');
+            Array.from(document.getElementsByClassName('leaflet-marker-icon')).forEach(element => {
+                if (element) {
+                    element.classList.add('my-div-icon-dot');
+                    element.classList.remove('my-div-icon');
                 }
             })
         } else if (zoom>13) {
-            markers.forEach(marker => {
-                if (document.getElementsByClassName('leaflet-marker-icon')[i-1]) {
-                    document.getElementsByClassName('leaflet-marker-icon')[i++ - 1].classList.remove('my-div-icon-dot');
-                    document.getElementsByClassName('leaflet-marker-icon')[i++ - 1].classList.add('my-div-icon');
+            Array.from(document.getElementsByClassName('leaflet-marker-icon')).forEach( element => {
+                if (element) {
+                    element.classList.remove('my-div-icon-dot');
+                    element.classList.add('my-div-icon');
                 }
             })
         } else {
-            markers.forEach(marker => {
-                if (document.getElementsByClassName('leaflet-marker-icon')[i-1]) {
-                    document.getElementsByClassName('leaflet-marker-icon')[i++ - 1].querySelector('.my-div-image').style.height= (10+5*(zoom-8)) + 'px';
+            Array.from(document.getElementsByClassName('leaflet-marker-icon')).forEach( element => {
+                if (element) {
+                   element.querySelector('.my-div-image').style.height= (10+5*(zoom-8)) + 'px';
                 } 
             })
         }
@@ -101,9 +103,9 @@ function DeclutterLabels({markers}) {
     function resetLabels(markers) {
 
         let i = 1;
-        markers.forEach(marker => {
-            if (document.getElementsByClassName('leaflet-marker-icon')[i-1]) {
-                addLabel(document.getElementsByClassName('leaflet-marker-icon')[i-1].querySelector('.my-div-div'), i++);
+        Array.from(document.getElementsByClassName('leaflet-marker-icon')).forEach( (element, index) => {
+            if (element) {
+                addLabel(element.querySelector('.my-div-div'), index);
             }
         })
         labelEngine.update();
@@ -143,6 +145,82 @@ function DeclutterLabels({markers}) {
 }
 
 
+function AddCurrentLocation() {
+
+    const map = useMap();
+    let [ currUserLoc, setCurrUserLoc ] = useState();
+    let [ ctrlEnabled, setCtrlEnabled ] = useState(false);
+    const ctrlRef = useRef();
+    ctrlRef.current = ctrlEnabled;
+
+    
+
+    function keyDownFunction(e) {
+        e.preventDefault();
+        // console.log('Keydown Func');
+        if (e.ctrlKey && !ctrlRef.current) {
+            setCtrlEnabled(true);
+            // console.log('CTRL enabled');
+        } 
+    }
+
+    function keyUpFunction(e) {
+        e.preventDefault();
+        // console.log('Keyup Func');
+        if (!e.ctrlKey && ctrlRef.current) {
+            setCtrlEnabled(false);
+            // console.log('CTRL disabled');
+        }
+    }
+
+    useEffect(() => {
+
+        document.getElementsByClassName('leaflet-container')[0].addEventListener('mouseover', (event) => {
+            document.addEventListener('keydown', keyDownFunction);
+            document.addEventListener('keyup', keyUpFunction);
+        })
+
+        document.getElementsByClassName('leaflet-container')[0].addEventListener('mouseleave', (event) => {
+            document.removeEventListener('keydown', keyDownFunction);
+            document.removeEventListener('keyup', keyUpFunction);
+        })
+        
+    }, [ctrlEnabled]);
+
+
+    function addMarker(e) {
+        setCurrUserLoc(e.latlng);
+        console.log(e);
+    }
+
+    console.log(ctrlEnabled);
+    if (ctrlEnabled) {
+        L.DomUtil.addClass(map._container,'leaflet-crosshair');
+        L.DomUtil.removeClass(map._container,'leaflet-grab');
+        map.on('click', addMarker);
+    } else {
+        L.DomUtil.removeClass(map._container,'leaflet-crosshair');
+        L.DomUtil.addClass(map._container,'leaflet-grab');
+        map.off('click');
+    }
+
+    if (currUserLoc) {
+        return (
+                <Marker 
+                    id='user'
+                    key='user' 
+                    position={currUserLoc} 
+                    icon={renderMarker('user', 'You')} 
+                // eventHandlers={{ click: (e) => onClickMarker(e, location.business.id) }}
+                >
+
+                {/* <Tooltip>{location.business.type}</Tooltip> */}
+                </Marker>
+        )
+    }
+}
+
+
 export default function CustomMap2(props) {
 
 
@@ -151,6 +229,9 @@ export default function CustomMap2(props) {
     function onClickMarker(e, id) {
         setSelectedLocation(id);
     }
+
+
+    
     
 
     const markers = [];
@@ -187,6 +268,7 @@ export default function CustomMap2(props) {
             {markers}
             <PaneToFirstLocation locations={locations} selectedLocation={selectedLocation}></PaneToFirstLocation>
             <DeclutterLabels markers={markers}></DeclutterLabels>
+            <AddCurrentLocation ></AddCurrentLocation>
         </MapContainer>
     );
 }
