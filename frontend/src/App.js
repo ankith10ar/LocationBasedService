@@ -1,16 +1,19 @@
-import logo from './logo.svg';
+// import logo from './logo.svg';
 import './App.css';
 import FullyCustomMap from './custom-map/CustomMap';
 import { ComposableMap, ZoomableGroup } from 'react-simple-maps';
 import CustomMap2 from './custom-map2/CustomMap2';
 import SidePane from './side-pane/SidePane';
 import { useState, useEffect } from 'react';
+import ControlPane from './control-pane/ControlPane';
+import logo from './assets/logo.png'
 
 function App() {
 
   const [locations, setLocations] = useState([]);
-
   const [selectedLocation, setSelectedLocation] = useState(null);
+  let [ currUserLoc, setCurrUserLoc ] = useState();
+
 
   const fetchLocations = async () => {
       try {
@@ -37,12 +40,35 @@ function App() {
     fetchLocations();
   }, []);
 
+  useEffect(() => {
+    setSelectedLocation(null);
+  }, [locations])
 
   return (
     <div className="App">
       <div className='app-container'>
+
+        <div className='map-logo'>
+          <img alt='logo' src={logo} className='map-logo'></img>
+        </div>
+        <ControlPane 
+          setLocations={setLocations} 
+          currUserLoc={currUserLoc} 
+          fetchLocations={fetchLocations}
+          locations={locations}
+        ></ControlPane>
+
         <SidePane selectedLocation={selectedLocation} setSelectedLocation={setSelectedLocation} locations={locations}></SidePane>
-        <CustomMap2 selectedLocation={selectedLocation} setSelectedLocation={setSelectedLocation} locations={locations}></CustomMap2>
+
+
+        <CustomMap2 
+          selectedLocation={selectedLocation} 
+          setSelectedLocation={setSelectedLocation} 
+          locations={locations} 
+          currUserLoc={currUserLoc} 
+          setCurrUserLoc={setCurrUserLoc}
+        ></CustomMap2>
+
       </div>
     </div>
   );

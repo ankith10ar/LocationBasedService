@@ -41,4 +41,18 @@ public class GeoLocationService {
         Point point = geometryFactory.createPoint(new Coordinate(lat, lon));
         return geoLocationRepository.findNearWithinDistance(point, distance);
     }
+
+    public List<GeoLocation> findWithType(String type) {
+        return geoLocationRepository.findLocationsWithType(type);
+    }
+
+    public List<GeoLocation> findWithTypeAround(double lat, double lon, String type, double distance) {
+        GeometryFactory geometryFactory = new GeometryFactory();
+        Point point = geometryFactory.createPoint(new Coordinate(lat, lon));
+        return geoLocationRepository.findLocationsWithTypeWithinDistance(point, type, distance);
+    }
+
+    public List<GeoLocation> findByText(String text) {
+        return geoLocationRepository.findLocationsWithText(text);
+    }
 }

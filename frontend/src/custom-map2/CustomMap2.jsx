@@ -35,6 +35,7 @@ function PaneToFirstLocation({locations, selectedLocation}) {
 
         if (selectedLocation) {
             const location = locations.find( (loc) => loc.business.id === selectedLocation);
+            if (!location) return;
             const centerLat = location.geo.coordinates[0];
             const centerLon = location.geo.coordinates[1];
             // map.panTo([centerLat, centerLon]);
@@ -145,10 +146,9 @@ function DeclutterLabels({markers}) {
 }
 
 
-function AddCurrentLocation() {
+function AddCurrentLocation({currUserLoc, setCurrUserLoc, setSelectedLocation}) {
 
     const map = useMap();
-    let [ currUserLoc, setCurrUserLoc ] = useState();
     let [ ctrlEnabled, setCtrlEnabled ] = useState(false);
     const ctrlRef = useRef();
     ctrlRef.current = ctrlEnabled;
@@ -190,6 +190,7 @@ function AddCurrentLocation() {
 
     function addMarker(e) {
         setCurrUserLoc(e.latlng);
+        setSelectedLocation(null);
         console.log(e);
     }
 
@@ -205,6 +206,7 @@ function AddCurrentLocation() {
     }
 
     if (currUserLoc) {
+        
         return (
                 <Marker 
                     id='user'
@@ -224,7 +226,7 @@ function AddCurrentLocation() {
 export default function CustomMap2(props) {
 
 
-    const {locations, selectedLocation, setSelectedLocation} = props;
+    const {locations, selectedLocation, setSelectedLocation, currUserLoc, setCurrUserLoc} = props;
 
     function onClickMarker(e, id) {
         setSelectedLocation(id);
@@ -253,22 +255,24 @@ export default function CustomMap2(props) {
 
 
     return (
-        <MapContainer style={{ width: "100%", height: "60vh" }} center={[50.0, 50.0]} zoom={13} scrollWheelZoom={true}>
-            <TileLayer
-                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-            />
-            {/* <Marker position={[50.0, 50.0]} icon={hospital} eventHandlers={{ click: (e) => onClickMarker(e) }}> */}
-                {/* <Popup>
-                    A pretty CSS3 popup. <br /> Easily customizable.
-                </Popup> */}
-                {/* <Tooltip>Hospital</Tooltip>
-            </Marker> */}
+        <div className='map-div'>
+            <MapContainer style={{ width: "100%", height: "60vh" }} center={[50.0, 50.0]} zoom={13} scrollWheelZoom={true}>
+                <TileLayer
+                    attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                />
+                {/* <Marker position={[50.0, 50.0]} icon={hospital} eventHandlers={{ click: (e) => onClickMarker(e) }}> */}
+                    {/* <Popup>
+                        A pretty CSS3 popup. <br /> Easily customizable.
+                    </Popup> */}
+                    {/* <Tooltip>Hospital</Tooltip>
+                </Marker> */}
 
-            {markers}
-            <PaneToFirstLocation locations={locations} selectedLocation={selectedLocation}></PaneToFirstLocation>
-            <DeclutterLabels markers={markers}></DeclutterLabels>
-            <AddCurrentLocation ></AddCurrentLocation>
-        </MapContainer>
+                {markers}
+                <PaneToFirstLocation locations={locations} selectedLocation={selectedLocation}></PaneToFirstLocation>
+                <DeclutterLabels markers={markers}></DeclutterLabels>
+                <AddCurrentLocation currUserLoc={currUserLoc} setCurrUserLoc={setCurrUserLoc} setSelectedLocation={setSelectedLocation}></AddCurrentLocation>
+            </MapContainer>
+        </div>
     );
 }
