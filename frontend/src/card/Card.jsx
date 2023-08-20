@@ -1,3 +1,5 @@
+import './Card.css';
+
 export default function Card(props) {
     
     const { location, selected, setSelectedLocation } = props;

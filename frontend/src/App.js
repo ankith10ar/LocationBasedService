@@ -55,7 +55,6 @@ function App() {
           setLocations={setLocations} 
           currUserLoc={currUserLoc} 
           fetchLocations={fetchLocations}
-          locations={locations}
         ></ControlPane>
 
         <SidePane selectedLocation={selectedLocation} setSelectedLocation={setSelectedLocation} locations={locations}></SidePane>

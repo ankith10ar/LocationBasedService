@@ -63,7 +63,7 @@
 }
 
 .filter-distance input[disabled]:hover + div {
-    display: block;;
+    display: block;
 }
 
 .filter-distance input::-webkit-outer-spin-button,
