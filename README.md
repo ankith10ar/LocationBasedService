@@ -48,7 +48,7 @@ export LBS_PASSWORD=<password>
 3. Using same terminal execute following command in project root folder
 
 ```
-docker compose up d 
+docker compose up -d 
 ```
 
 4. Using same terminal execute following command to start the application
