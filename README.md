@@ -26,7 +26,7 @@ Requirement
 - Docker
 - Docker Compose v2.2.1
 
-###Steps to execute application
+### Steps to execute application
 
 1. Clone git repository using following command 
 
@@ -72,7 +72,7 @@ Once you start the application open the application link on browser you will see
 
 ![landing-page.png](pictures/landing-page.png)
 
-####About UI
+#### About UI
 - On left navbar user can view all locations in the area and on the right side user can view it in map.
 - On top, we can find 3 input boxes 
   - The first one is to filter locations via text
@@ -85,7 +85,7 @@ Once you start the application open the application link on browser you will see
 - Each type of location is marked with a different color and icon 
 
 
-####Instructions to navigate map
+#### Instructions to navigate map
 1. Use scroll wheel to zoom in and out of map 
 2. Left click and drag mouse to pan the map 
 3. User can click on any location on left navbar and the map will automatically move to that location
