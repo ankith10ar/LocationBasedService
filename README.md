@@ -18,7 +18,6 @@ This project is a location-based service utilizing Spring Boot for the backend, 
 
 ## Installation
 
-[Add installation instructions here, including prerequisites and step-by-step setup for both backend and frontend. For instance: Installation could involve cloning the repository, setting up the database, installing dependencies, and running the application.]
 Requirement
 - JDK 17
 - Node 20.4.0
@@ -65,8 +64,6 @@ docker compose up d
 5. Open http://localhost:8080 link in browser
 
 ## Usage
-
-[Provide details on how to use the project. Include instructions on interacting with the map, setting the user's location, searching for various places such as Hospitals, Malls, Banks, applying filters by type and distance, and utilizing the additional text search functionality.]
 
 Once you start the application open the application link on browser you will see following screen
 
@@ -167,8 +164,6 @@ Thank you for your understanding and support!
 - [ChatGPT](https://chat.openai.com/)
 
 ## Roadmap
-
-[Outline future features or updates planned for the project.]
 
 The Location-Based Service Project is a work in progress, and we have a couple of ideas in mind for future enhancements. However, nothing is planned or scheduled at the moment. The project roadmap may include, but is not limited to, the following ideas:
 
