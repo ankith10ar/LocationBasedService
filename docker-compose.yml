@@ -9,6 +9,6 @@ services:
     ports:
       - "5432:5432"
     environment:
-      - POSTGRES_PASSWORD=locationbasedservice
+      - POSTGRES_PASSWORD=${LBS_PASSWORD}
       - POSTGRES_DB=lbs
-      - POSTGRES_USER=geouser
+      - POSTGRES_USER=${LBS_USER}

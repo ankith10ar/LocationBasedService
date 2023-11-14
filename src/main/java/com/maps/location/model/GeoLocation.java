@@ -13,16 +13,23 @@ import java.util.Objects;
 @RequiredArgsConstructor
 @AllArgsConstructor
 @Entity(name = "geolocation")
-@IdClass(GeoLocationId.class)
 public class GeoLocation {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long geoId;
+
     @Column(columnDefinition = "geometry(Point, 4326)")
     private Point geo;
-    @Id
-    @OneToOne(optional = false)
-    @JoinColumn(name = "business_id", nullable = false)
+
+    @OneToOne(optional = false, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(name = "business_id", referencedColumnName = "id", nullable = false, unique = true)
     private Business business;
+
+    public GeoLocation(Point point, Business business) {
+        this.geo = point;
+        this.business = business;
+    }
 
     @Override
     public boolean equals(Object o) {

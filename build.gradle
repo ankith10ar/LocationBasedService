@@ -1,6 +1,6 @@
 plugins {
 	id 'java'
-	id 'org.springframework.boot' version '3.1.2'
+	id 'org.springframework.boot' version '3.1.5'
 	id 'io.spring.dependency-management' version '1.1.2'
 }
 
@@ -9,6 +9,7 @@ version = '0.0.1-SNAPSHOT'
 
 java {
 	sourceCompatibility = '17'
+	targetCompatibility = '17'
 }
 
 repositories {
@@ -35,3 +36,22 @@ dependencies {
 tasks.named('test') {
 	useJUnitPlatform()
 }
+
+task buildFrontend(type: Exec) {
+	workingDir = file('frontend') // Path to your ReactJS frontend directory
+	doLast {
+		println "Working directory: $workingDir"
+	}
+	commandLine 'cmd', '/c', 'npm', 'install' // Ensure npm dependencies are installed
+	commandLine 'cmd', '/c', 'npm', 'run', 'build' // Use the command to build your ReactJS app
+}
+
+task moveFrontendResources(type: Copy, dependsOn: buildFrontend) {
+	doLast {
+		println "Executing moveFrontendResources task"
+	}
+	from 'frontend/build' // Path to the built ReactJS resources
+	into 'src/main/resources/static' // Target directory in the backend resources
+}
+
+processResources.dependsOn(moveFrontendResources)

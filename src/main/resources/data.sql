@@ -98,3 +98,6 @@ insert into business (id, name, address, email, type, latitude, longitude, conta
 insert into business (id, name, address, email, type, latitude, longitude, contact) values (98, 'Miboo', '30208 5th Avenue', 'kbuttrum2p@goo.ne.jp', 'HOSPITAL', 49.9320157993, 50.9522675586, '999-430-9016');
 insert into business (id, name, address, email, type, latitude, longitude, contact) values (99, 'Kimia', '3 Kensington Hill', 'scornejo2q@addtoany.com', 'MALL', 49.7291165528, 50.3088025694, '230-929-0358');
 insert into business (id, name, address, email, type, latitude, longitude, contact) values (100, 'Skinte', '1 Chinook Way', 'npittway2r@baidu.com', 'MALL', 50.8732640722, 50.2074636097, '976-520-5769');
+
+insert into geolocation (geo_id, geo, business_id)
+select id, ST_SetSRID(ST_MakePoint(longitude, latitude), 4326), id as business_id from business;

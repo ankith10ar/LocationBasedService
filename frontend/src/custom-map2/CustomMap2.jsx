@@ -19,11 +19,11 @@ let DefaultIcon = L.icon({
 
 L.Marker.prototype.options.icon = DefaultIcon;
 
-const hospital = L.divIcon({
-    className: "my-div-icon",
-    html: '<img class="my-div-image" src="'+icon+'"/>'+
-            '<span class="my-div-span">Hospital</span>'
-})
+// const hospital = L.divIcon({
+//     className: "my-div-icon",
+//     html: '<img class="my-div-image" src="'+icon+'"/>'+
+//             '<span class="my-div-span">Hospital</span>'
+// })
 
 
 
@@ -255,7 +255,7 @@ export default function CustomMap2(props) {
 
 
     return (
-        <div className='map-div'>
+        <div className='map-div' data-testid='map-div'>
             <MapContainer style={{ width: "100%", height: "60vh" }} center={[50.0, 50.0]} zoom={13} scrollWheelZoom={true}>
                 <TileLayer
                     attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'

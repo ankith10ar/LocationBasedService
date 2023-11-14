@@ -1,4 +1,4 @@
-import { render, screen, queryByAttribute, getByText, waitFor } from '@testing-library/react';
+import { render, screen, queryByAttribute, getByText, waitFor, fireEvent } from '@testing-library/react';
 import ControlPane from './ControlPane';
 import * as services from "../services/Service";
 import userEvent from '@testing-library/user-event';
@@ -225,8 +225,11 @@ test("clear filter should clear values", async () => {
 //                             setLocations={setLocations}/>);
 
 //     // userEvent.hover(getById(dom.container, 'distanceFilter'));
-//     const style = window.getComputedStyle(getById(dom.container, 'filterDistanceToolTip'))
-//     expect(style).toBe('block');
+//     // fireEvent.mouseOver(getById(dom.container, 'distanceFilter'))
+//     // const style = window.getComputedStyle()
+//     await waitFor(() => {
+//         expect(getById(dom.container, 'filterDistanceToolTip')).toHaveStyle('z-index: 5');
+//     });
 // })
 
 

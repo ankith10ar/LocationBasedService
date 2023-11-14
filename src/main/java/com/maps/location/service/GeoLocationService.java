@@ -1,8 +1,6 @@
 package com.maps.location.service;
 
-import com.maps.location.model.Business;
 import com.maps.location.model.GeoLocation;
-import com.maps.location.repository.BusinessRepository;
 import com.maps.location.repository.GeoLocationRepository;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
@@ -11,25 +9,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class GeoLocationService {
 
     @Autowired
-    private BusinessRepository businessRepository;
-
-    @Autowired
     private GeoLocationRepository geoLocationRepository;
-
-    public void fillGeoLocationData() {
-        List<Business> businesses = businessRepository.findAll();
-        GeometryFactory geometryFactory = new GeometryFactory();
-        List<GeoLocation> geoLocations = businesses.stream()
-                .map(business -> new GeoLocation(geometryFactory.createPoint(new Coordinate(business.getLatitude(), business.getLongitude())), business))
-                .collect(Collectors.toList());
-        geoLocationRepository.saveAllAndFlush(geoLocations);
-    }
 
     public List<GeoLocation> findAll() {
         return geoLocationRepository.findAll();
